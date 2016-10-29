@@ -4,7 +4,31 @@ import csv, sys
 # Takes CSV file data on rental prices and gives the zip code a rank based on several critera
 
 def main():
+    parseRentPriceCSV()
 
+def getUpDownRSqr(xd, yd):
+    par = np.polyfit(xd, yd, 1, full=True)
+    slope = par[0][0]
+    intercept=par[0][1]
+
+    variance = np.var(yd)
+    residuals = np.var([(slope*xx + intercept - yy)  for xx,yy in zip(xd,yd)])
+    rSqr = np.round(1-residuals/variance, decimals=2)
+
+    data = [slope, rSqr]
+    return data
+
+def getRentalIndex(data):
+
+    # Split data info
+    cityCompare = data[0]
+    priceTrend = data[1]
+    priceStability = data[2]
+
+    rentalIndex = .5 * cityCompare + .25 * priceTrend + .25 * priceStability
+    return rentalIndex
+
+def parseRentPriceCSV():
     fileNameIn = ["studio_zip.csv", "one_zip.csv", "two_zip.csv", "three_zip.csv", "four_zip.csv", "five_zip.csv"]
     fileNameOut = ["studio.csv", "one.csv", "two.csv", "three.csv", "four.csv", "five.csv"]
     maxCityPrice = [2199, 2390, 2694.5, 3000, 3700, 4496.5]
@@ -101,34 +125,12 @@ def main():
                 outName = "out/" + fileNameOut[j]
                 with open(outName, "wb") as csv_file:
                     writer = csv.writer(csv_file)
+                    writer.writerow(["ZIP_CODE", "RENT_INDEX"])
                     for key, value in rent.items():
                         writer.writerow([key, value])
 
             except csv.Error as e:
                 sys.exit('file %s, line %d: %s' % (filename, reader.line_num, e))
-
-
-def getUpDownRSqr(xd, yd):
-    par = np.polyfit(xd, yd, 1, full=True)
-    slope = par[0][0]
-    intercept=par[0][1]
-
-    variance = np.var(yd)
-    residuals = np.var([(slope*xx + intercept - yy)  for xx,yy in zip(xd,yd)])
-    rSqr = np.round(1-residuals/variance, decimals=2)
-
-    data = [slope, rSqr]
-    return data
-
-def getRentalIndex(data):
-
-    # Split data info
-    cityCompare = data[0]
-    priceTrend = data[1]
-    priceStability = data[2]
-
-    rentalIndex = .5 * cityCompare + .25 * priceTrend + .25 * priceStability
-    return rentalIndex
 
 def scaleTo100(oldValue, oldMax, oldMin):
 
