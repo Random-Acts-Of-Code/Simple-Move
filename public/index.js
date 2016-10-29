@@ -7,7 +7,7 @@ require(["esri/map",
 		zoom: 13
 	});
     var prices = Request({
-        url: "http://localhost:3000",
+        url: "http://localhost:3000/test/data.json",
         handleAs: "json"
     });
     prices.then(function (data){
