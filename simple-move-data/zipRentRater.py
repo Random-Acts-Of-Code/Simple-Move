@@ -12,35 +12,34 @@ def parseGeneralData(zipCodes):
     fileNameIn = ["population-density-zip.csv"]
     fileNameOut = "general-data.csv"
 
-    for j in range(len(fileNameIn)):
-        filename = "in/" + fileNameIn[j]
-        with open(filename, "rb") as f:
-            reader = csv.reader(f)
-            try:
-                # Parse csv file
-                for row in reader:
-                    if (row[0] in zipCodes):
-                        # add info
-                        zipCodes[row[0]].insert(0, (float(row[1])))
-                        zipCodes[row[0]].insert(1, (float(row[2])))
-                        zipCodes[row[0]].insert(2, (float(row[3])))
+    filename = "in/" + fileNameIn[0]
+    with open(filename, "rb") as f:
+        reader = csv.reader(f)
+        try:
+            # Parse csv file
+            for row in reader:
+                if (row[0] in zipCodes):
+                    # add info
+                    zipCodes[row[0]].insert(0, (float(row[1])))
+                    zipCodes[row[0]].insert(1, (float(row[2])))
+                    zipCodes[row[0]].insert(2, (float(row[3])))
 
-                        # test if zip has no data
-                        if (len(zipCodes[row[0]]) > 3):
-                            zipCodes[row[0]].pop()
-                            zipCodes[row[0]].pop()
-                            zipCodes[row[0]].pop()
+                    # test if zip has no data
+                    if (len(zipCodes[row[0]]) > 3):
+                        zipCodes[row[0]].pop()
+                        zipCodes[row[0]].pop()
+                        zipCodes[row[0]].pop()
 
-                # write to new csv
-                outName = "out/" + fileNameOut
-                with open(outName, "wb") as csv_file:
-                    writer = csv.writer(csv_file)
-                    writer.writerow(["ZIP_CODE", "POPULATION", "SQUARE_MILES", "POPULATION_DENSITY"])
-                    for key, value in zipCodes.items():
-                        writer.writerow([key, value[0], value[1], value[2]])
+            # write to new csv
+            outName = "out/" + fileNameOut
+            with open(outName, "wb") as csv_file:
+                writer = csv.writer(csv_file)
+                writer.writerow(["ZIP_CODE", "POPULATION", "SQUARE_MILES", "POPULATION_DENSITY"])
+                for key, value in zipCodes.items():
+                    writer.writerow([key, value[0], value[1], value[2]])
 
-            except csv.Error as e:
-                sys.exit('file %s, line %d: %s' % (filename, reader.line_num, e))
+        except csv.Error as e:
+            sys.exit('file %s, line %d: %s' % (filename, reader.line_num, e))
 
 def getUpDownRSqr(xd, yd):
     par = np.polyfit(xd, yd, 1, full=True)
@@ -166,7 +165,7 @@ def parseRentPriceCSV():
                 outName = "out/" + fileNameOut[j]
                 with open(outName, "wb") as csv_file:
                     writer = csv.writer(csv_file)
-                    writer.writerow(["ZIP_CODE", "RENT_INDEX", "MEDIAN RENT"])
+                    writer.writerow(["ZIP_CODE", "RENT_INDEX", "MEDIAN_RENT"])
                     for key, value in rent.items():
                         writer.writerow([key, value[0], value[1]])
 
