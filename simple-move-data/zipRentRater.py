@@ -35,7 +35,7 @@ def parseGeneralData(zipCodes):
                 outName = "out/" + fileNameOut
                 with open(outName, "wb") as csv_file:
                     writer = csv.writer(csv_file)
-                    writer.writerow(["ZIP_CODE", "2010_POPULATION", "SQUARE_MILES", "POPULATION_DENSITY"])
+                    writer.writerow(["ZIP_CODE", "POPULATION", "SQUARE_MILES", "POPULATION_DENSITY"])
                     for key, value in zipCodes.items():
                         writer.writerow([key, value[0], value[1], value[2]])
 
