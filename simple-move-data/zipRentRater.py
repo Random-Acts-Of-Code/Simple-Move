@@ -4,7 +4,30 @@ import csv, sys
 # Takes CSV file data on rental prices and gives the zip code a rank based on several critera
 
 def main():
-    parseRentPriceCSV()
+    rentDict = parseRentPriceCSV()
+    parseGeneralData(rentDict)
+
+def parseGeneralData(rentDic):
+    # Create dict
+    genDic = {}
+
+    fileNameIn = ["population-density-zip.csv", "unemployment-zip.csv"]
+    fileNameOut = "general-data.csv"
+
+    for j in range(len(fileNameIn)):
+        filename = "in/" + fileNameIn[j]
+        with open(filename, "rb") as f:
+            reader = csv.reader(f)
+            try:
+                # Parse csv file
+                for key in rentDic:
+                    for row in reader:
+                        if (row[0] == key):
+                            # TODO
+                            i = 1
+
+            except csv.Error as e:
+                sys.exit('file %s, line %d: %s' % (filename, reader.line_num, e))
 
 def getUpDownRSqr(xd, yd):
     par = np.polyfit(xd, yd, 1, full=True)
@@ -33,8 +56,11 @@ def parseRentPriceCSV():
     fileNameOut = ["studio.csv", "one.csv", "two.csv", "three.csv", "four.csv", "five.csv"]
     maxCityPrice = [2199, 2390, 2694.5, 3000, 3700, 4496.5]
 
+    rent = {}
+
     # loop through all the apartment sizes
     for j in range(len(fileNameIn)):
+
         filename = "in/" + fileNameIn[j]
         with open(filename, "rb") as f:
             reader = csv.reader(f)
@@ -99,7 +125,7 @@ def parseRentPriceCSV():
                         if (rentRatio < minRentRatio):
                             minRentRatio = rentRatio
 
-                        newData = [rentRatio, slope, rSqr]
+                        newData = [rentRatio, slope, rSqr, currRent]
 
                         # Map data to zip code
                         rent[int(row[0])] = newData
@@ -119,18 +145,20 @@ def parseRentPriceCSV():
                     priceStability = scaleTo100(data[2], maxRSqr, minRSqr)
 
                     values = [cityCompare, priceTrend, priceStability]
-                    rent[key] = getRentalIndex(values)
+                    rent[key] = [getRentalIndex(values), data[3]]
 
                 # write to new csv
                 outName = "out/" + fileNameOut[j]
                 with open(outName, "wb") as csv_file:
                     writer = csv.writer(csv_file)
-                    writer.writerow(["ZIP_CODE", "RENT_INDEX"])
+                    writer.writerow(["ZIP_CODE", "RENT_INDEX", "MEDIAN RENT"])
                     for key, value in rent.items():
-                        writer.writerow([key, value])
+                        writer.writerow([key, value[0], value[1]])
 
             except csv.Error as e:
                 sys.exit('file %s, line %d: %s' % (filename, reader.line_num, e))
+
+    return rent
 
 def scaleTo100(oldValue, oldMax, oldMin):
 
