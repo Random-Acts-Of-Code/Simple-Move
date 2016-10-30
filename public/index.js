@@ -71,6 +71,19 @@ require(["dojo/parser",
         dijitPopup.open({popup: dialog, x: evt.pageX, y: evt.pageY});
     });
     
+    ratings.on("mouse-over", function(evt){
+        template = "<b>User Rating</b><hr>" +
+                "<b>Rating: ${User_Rating}</b>";
+        var content = esriLang.substitute(evt.graphic.attributes, template);
+        dialog.setContent(content);
+        domStyle.set(dialog.domNode, "opacity", 0.85);
+        dijitPopup.open({popup: dialog, x: evt.pageX, y: evt.pageY});
+    });
+    
+    ratings.on("mouse-out", function(evt){
+        dijitPopup.close(dialog);
+    });
+    
     zips.on("mouse-out", function(evt){
         dijitPopup.close(dialog);
     });
@@ -116,6 +129,13 @@ require(["dojo/parser",
         
         zips.setRenderer(br);
         zips.redraw();
+        var title;
+        if(field === "general"){
+            title = fieldToName("general", index);
+        } else {
+            title = "Rent rating";
+        }
+        legend.layerInfos[0].title = title;
         legend.refresh();
     }
     
@@ -177,7 +197,7 @@ require(["dojo/parser",
         return breakValues;
     }
     
-    function fieldToName(field)
+    function fieldToName(field, index)
     {
         var returnValue;
         switch(field){
@@ -200,7 +220,22 @@ require(["dojo/parser",
                 returnValue = "Five Bedroom";
                 break;
             case "general":
-                returnValue = "General Information";
+                switch(index){
+                    case 0:
+                        returnValue = "Population";
+                        break;
+                    case 1:
+                        returnValue = "Square Miles";
+                        break;
+                    case 2:
+                        returnValue = "Population Density";
+                        break;
+                    case 3:
+                        returnValue = "Unemployment"
+                        break;
+                    default:
+                        returnValue = "General Information";
+                }
                 break;
             default:
                 returnValue = "unexpected field";
