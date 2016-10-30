@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="ab1f818b-84f0-42e7-991e-97a32cfd07bc" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/style.css" afterPath="$PROJECT_DIR$/public/style.css" />
     </list>
     <ignored path="Simple-Move.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -460,7 +459,7 @@
       <workItem from="1477786348789" duration="353000" />
       <workItem from="1477788662100" duration="1186000" />
       <workItem from="1477827691272" duration="2699000" />
-      <workItem from="1477832241229" duration="4505000" />
+      <workItem from="1477832241229" duration="4638000" />
     </task>
     <task id="LOCAL-00001" summary="added for each to server">
       <created>1477784101350</created>
@@ -560,11 +559,18 @@
       <option name="project" value="LOCAL" />
       <updated>1477837472053</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="fixed css bug">
+      <created>1477838575507</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1477838575507</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13541000" />
+    <option name="totallyTimeSpent" value="13674000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="873" extended-state="6" />
@@ -611,7 +617,8 @@
     <MESSAGE value="node server returning unemployment" />
     <MESSAGE value="edited minor styling" />
     <MESSAGE value="added more styling" />
-    <option name="LAST_COMMIT_MESSAGE" value="added more styling" />
+    <MESSAGE value="fixed css bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed css bug" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
