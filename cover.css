@@ -51,7 +51,7 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  /*background-color: rgba(117, 117, 117, 0.5)*/
+  /*background-color: rgba(117, 117, 117, 0.4);*/
 }
 .site-wrapper-inner {
   display: table-cell;
@@ -60,6 +60,9 @@ body {
 .cover-container {
   margin-right: auto;
   margin-left: auto;
+  background-color: rgba(66, 66, 66, 0.7);
+  padding: 2em;
+  border-radius: 3px;
 }
 
 /* Padding for spacing */
@@ -181,4 +184,14 @@ h1 {
 
 .inner .cover {
   margin-top: 100px;
+}
+
+.btn:hover, .btn-lg:hover, .btn-default:hover {
+  background-position: 0px !important;
+  background-color: #00BFFF;
+  color: #fff;
+}
+
+.btn, .btn-lg, .btn-default {
+  background-image: none;
 }
