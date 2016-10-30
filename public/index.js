@@ -140,7 +140,13 @@ require(["dojo/parser",
         var query = new Query();
         query.objectIds = inBuffer;
         ratings.selectFeatures(query, FeatureLayer.SELECTION_NEW, function(results){
-            //console.log(results);
+            var average = 0;
+            for(var i = 0; i < results.length; i++)
+                {
+                    average += results[i].attributes.User_Rating;
+                }
+            average = average/results.length;
+            dom.byId("messages").innerHTML = "Average User Rating: " + average;
         });
     }
     
