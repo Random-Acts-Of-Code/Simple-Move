@@ -96,6 +96,9 @@ require(["dojo/parser",
                                new Color([207, 34, 171, 0.5]));
     ratings.setSelectionSymbol(ratingSymbol);
     
+    var nullSymbol = new SMS().setSize(0);
+    ratings.setRenderer(new SimpleRenderer(nullSymbol));
+    
     map.addLayer(zips);
     map.addLayer(ratings);
     
