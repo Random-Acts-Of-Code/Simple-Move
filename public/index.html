@@ -1,135 +1,77 @@
+
 <!DOCTYPE html>
-<html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
 
-		<!--Google fonts-->
-		<link href="https://fonts.googleapis.com/css?family=Quicksand:300,400" rel="stylesheet">
+    <title>simplemove</title>
 
-        <link rel="stylesheet" href="https://js.arcgis.com/3.18/dijit/themes/claro/claro.css">
-		<link rel="stylesheet" href="https://js.arcgis.com/3.18/esri/css/esri.css">
-		<link rel="stylesheet" href="style.css">
-		<script src="https://js.arcgis.com/3.18/"></script>
-		<script src="index.js"></script>
-		<title></title>
-	</head>
-	<body class="claro">
-        <div id="content"
-             data-dojo-type="dijit/layout/BorderContainer"
-             data-dojo-props="design:'headline', gutters:true"
-             style="width: 100%; height: 100%; margin: 0;">
-            
-            <div id="rightPane"
-                 data-dojo-type="dijit/layout/ContentPane"
-                 data-dojo-props="region:'right'">
-                <div data-dojo-type="dijit/layout/AccordionContainer">
-                    
-                    <div data-dojo-type="dijit/layout/ContentPane" id="legendPane"
-                         data-dojo-props="title:'Legend', selected:true">
-                        <div id="legendDiv"></div>
-                        <span id="messages"></span>
-                    </div>
-                    
-                    <div data-dojo-type="dijit/layout/ContentPane"
-                         data-dojo-props="title:'Select Data'">
-                        <div id="dataSelectDiv" data-dojo-type="dijit/DropDownMenu">
-                            <div data-dojo-type="dijit/MenuItem"> 
-                                Rating for Studio Apartments
-                                <script type="dojo/on" data-dojo-event="click">
-                                    drawFeatureLayer("general", 4);
-                                    drawFeatureLayer("studio", 0);
-                                </script>
-                            </div>
-                            <div data-dojo-type="dijit/MenuItem"> 
-                                Rating for One Bedroom
-                                <script type="dojo/on" data-dojo-event="click">
-                                    drawFeatureLayer("general", 4);
-                                    drawFeatureLayer("one", 0);
-                                </script>
-                            </div>
-                            <div data-dojo-type="dijit/MenuItem"> 
-                                Rating for Two Bedroom
-                                <script type="dojo/on" data-dojo-event="click">
-                                    drawFeatureLayer("general", 4);
-                                    drawFeatureLayer("two", 0);
-                                </script>
-                            </div>
-                            <div data-dojo-type="dijit/MenuItem"> 
-                                Rating for Three Bedroom
-                                <script type="dojo/on" data-dojo-event="click">
-                                    drawFeatureLayer("general", 4);
-                                    drawFeatureLayer("three", 0);
-                                </script>
-                            </div>
-                            <div data-dojo-type="dijit/MenuItem"> 
-                                Rating for Four Bedroom
-                                <script type="dojo/on" data-dojo-event="click">
-                                    drawFeatureLayer("general", 4);
-                                    drawFeatureLayer("four", 0);
-                                </script>
-                            </div>
-                            <div data-dojo-type="dijit/MenuItem"> 
-                                Rating for Five Bedroom
-                                <script type="dojo/on" data-dojo-event="click">
-                                    drawFeatureLayer("general", 4);
-                                    drawFeatureLayer("five", 0);
-                                </script>
-                            </div>
-                            <div data-dojo-type="dijit/MenuItem"> 
-                                Population
-                                <script type="dojo/on" data-dojo-event="click">
-                                    drawFeatureLayer("general", 4);
-                                    drawFeatureLayer("general", 0);
-                                </script>
-                            </div>
-                            <div data-dojo-type="dijit/MenuItem"> 
-                                Square Miles
-                                <script type="dojo/on" data-dojo-event="click">
-                                    drawFeatureLayer("general", 4);
-                                    drawFeatureLayer("general", 1);
-                                </script>
-                            </div>
-                            <div data-dojo-type="dijit/MenuItem"> 
-                                Population Density
-                                <script type="dojo/on" data-dojo-event="click">
-                                    drawFeatureLayer("general", 4);
-                                    drawFeatureLayer("general", 2);
-                                </script>
-                            </div>
-                            <div data-dojo-type="dijit/MenuItem"> 
-                                Unemployment
-                                <script type="dojo/on" data-dojo-event="click">
-                                    drawFeatureLayer("general", 4);
-                                    drawFeatureLayer("general", 3);
-                                </script>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div data-dojo-type="dijit/layout/ContentPane"
-                         data-dojo-props="title:'Submit Rating'">
-                        <div data-dojo-type="dijit/form/Form" id="ratingForm" data-dojo-id="ratingForm"
-                             encType="multipart/form-data" action="" method="">
-                            <input type="text" id="address" placeholder="zip" data-dojo-type="dijit/form/TextBox" />
-                            <input type="number" id="rating" placeholder="rating" data-dojo-type="dijit/form/NumberTextBox" />
-                            <button data-dojo-type="dijit/form/Button" type="button">
-                                Submit
-                                <script type="dojo/on" data-dojo-event="click">
-                                    var address = ratingForm.getChildren()[0].getValue();
-                                    var rating = ratingForm.getChildren()[1].getValue();
-                                    submitRating(address, rating);
-                                </script>
-                            </button> 
-                        </div>
-                    </div>
-                </div>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <!-- Custom styles for this template -->
+    <link href="cover.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="site-wrapper">
+
+      <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+          <div class="masthead clearfix">
+            <div class="inner">
+              <!--<h3 class="masthead-brand"><span id="simple">simple</span><span id="move">move</span></h3>-->
+              <nav>
+                <!--<ul class="nav masthead-nav">-->
+                  <!--<li class="active"><a href="#">Home</a></li>-->
+                  <!--<li><a href="#">Features</a></li>-->
+                  <!--<li><a href="#">Contact</a></li>-->
+                <!--</ul>-->
+              </nav>
             </div>
-            <div id="map"
-                 data-dojo-type="dijit/layout/ContentPane"
-                 data-dojo-props="region:'center'"
-                 style="overflow:hidden;">
-            </div>
+          </div>
+
+          <div class="inner cover">
+            <h1 class="cover-heading"><span id="simple">simple</span><span id="move">move</span></h1>
+            <p class="lead">Quickly get information on the neighborhood you're considering before you move.</p>
+            <p class="lead">
+              <a href="app.html" class="btn btn-lg btn-default">See Map</a>
+            </p>
+            <p style="font-weight: 100">Our rating is a dynamic rating system for ranking the financial cost of renting apartments.  It takes information such as price trends,
+              historical costs, and city/state wide averages to analyze and determine a quantitative ranking for the area you are interesting in moving to.
+              Our rating is based on a 100 point scale so the higher the number the better neighborhood should be!</p>
+          </div>
+
         </div>
-	</body>
+
+      </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  </body>
 </html>
