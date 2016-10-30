@@ -44,8 +44,8 @@ def parseGeneralData(inputData):
             for row in reader:
                 if (row[0] in zipCodes):
                     num = 0
-                    num = float(re.sub('%', '', row[1])) / 100
-                    zipCodes[row[0]].insert(3, num)
+                    num = float(re.sub('%', '', row[1]))
+                    zipCodes[row[0]].insert(3, int(num))
 
                     # test if zip has no data
                     if (len(zipCodes[row[0]]) > 4):
