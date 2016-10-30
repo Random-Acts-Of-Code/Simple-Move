@@ -1,5 +1,5 @@
 import numpy as np
-import csv, sys
+import csv, sys, re
 
 # Takes CSV file data on rental prices and gives the zip code a rank based on several critera
 
@@ -7,11 +7,13 @@ def main():
     zipCodes = parseRentPriceCSV()
     parseGeneralData(zipCodes)
 
-def parseGeneralData(zipCodes):
+def parseGeneralData(inputData):
+    zipCodes = inputData
 
-    fileNameIn = ["population-density-zip.csv"]
+    fileNameIn = ["population-density-zip.csv", "unemployment-zip.csv"]
     fileNameOut = "general-data.csv"
 
+    # POP DENSITY
     filename = "in/" + fileNameIn[0]
     with open(filename, "rb") as f:
         reader = csv.reader(f)
@@ -25,21 +27,40 @@ def parseGeneralData(zipCodes):
                     zipCodes[row[0]].insert(2, (float(row[3])))
 
                     # test if zip has no data
-                    if (len(zipCodes[row[0]]) > 3):
+                    if (len(zipCodes[row[0]]) > 4):
                         zipCodes[row[0]].pop()
                         zipCodes[row[0]].pop()
                         zipCodes[row[0]].pop()
-
-            # write to new csv
-            outName = "out/" + fileNameOut
-            with open(outName, "wb") as csv_file:
-                writer = csv.writer(csv_file)
-                writer.writerow(["ZIP_CODE", "POPULATION", "SQUARE_MILES", "POPULATION_DENSITY"])
-                for key, value in zipCodes.items():
-                    writer.writerow([key, value[0], value[1], value[2]])
 
         except csv.Error as e:
             sys.exit('file %s, line %d: %s' % (filename, reader.line_num, e))
+
+    # UNEMPLOYMENT
+    filename = "in/" + fileNameIn[1]
+    with open(filename, "rb") as f:
+        reader = csv.reader(f)
+        try:
+            # Parse csv file
+            for row in reader:
+                if (row[0] in zipCodes):
+                    num = 0
+                    num = float(re.sub('%', '', row[1])) / 100
+                    zipCodes[row[0]].insert(3, num)
+
+                    # test if zip has no data
+                    if (len(zipCodes[row[0]]) > 4):
+                        zipCodes[row[0]].pop()
+
+        except csv.Error as e:
+            sys.exit('file %s, line %d: %s' % (filename, reader.line_num, e))
+
+    # write to new csv
+    outName = "out/" + fileNameOut
+    with open(outName, "wb") as csv_file:
+        writer = csv.writer(csv_file)
+        writer.writerow(["ZIP_CODE", "POPULATION", "SQUARE_MILES", "POPULATION_DENSITY", "UNEMPLOYMENT"])
+        for key, value in zipCodes.items():
+            writer.writerow([key, value[0], value[1], value[2], value[3]])
 
 def getUpDownRSqr(xd, yd):
     par = np.polyfit(xd, yd, 1, full=True)
@@ -101,7 +122,7 @@ def parseRentPriceCSV():
                                 xd.append(i + 1)
                                 yd.append(float(row[i+6]))
                         if not(row[0] in zipCodes):
-                            zipCodes[row[0]] = [0, 0, 0]
+                            zipCodes[row[0]] = [0, 0, 0, 0]
 
                     # Analyze data
                     if (xd != [] and yd != []):
