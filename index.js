@@ -58,7 +58,7 @@ studio_converter.fromFile("simple-move-data/out/studio.csv",function(err,result)
 general_converter.fromFile("simple-move-data/out/general-data.csv",function(err,result){
     response.general = {};
     result.forEach(function (obj) {
-        response.general[obj.ZIP_CODE] = [obj.POPULATION, obj.SQUARE_MILES, obj.POPULATION_DENSITY];
+        response.general[obj.ZIP_CODE] = [obj.POPULATION, obj.SQUARE_MILES, obj.POPULATION_DENSITY, obj.UNEMPLOYMENT];
     });
 });
 
