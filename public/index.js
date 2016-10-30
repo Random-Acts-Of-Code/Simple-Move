@@ -2,21 +2,30 @@ require(["dojo/parser",
          "dojo/_base/array",
          "dojo/on",
          "esri/map",
+         "esri/graphic",
+         "esri/InfoTemplate",
          "esri/dijit/Legend",
+         "esri/dijit/Search",
          "esri/layers/FeatureLayer",
+         "esri/symbols/SimpleMarkerSymbol",
          "esri/symbols/SimpleLineSymbol",
          "esri/symbols/SimpleFillSymbol",
          "esri/renderers/SimpleRenderer",
          "esri/renderers/ClassBreaksRenderer",
          "esri/Color",
 		 "esri/request",
+         "dijit/form/Form",
+         "dijit/form/TextBox",
+         "dijit/form/NumberTextBox",
+         "dijit/form/Button",
          "dijit/DropDownMenu",
          "dijit/MenuItem",
          "dijit/layout/BorderContainer",
          "dijit/layout/ContentPane",
          "dijit/layout/AccordionContainer",
 		 "dojo/domReady!"], 
-        function(Parser, arr, on, Map, Legend, FeatureLayer, SLS, SFS, SimpleRenderer, ClassBreaksRenderer, Color, EsriRequest, DropDownMenu){
+        function(Parser, arr, on, Map, Graphic, InfoTemplate, Legend, Search, FeatureLayer, 
+                  SMS, SLS, SFS, SimpleRenderer, ClassBreaksRenderer, Color, EsriRequest){
     Parser.parse();
 	var map = new Map("map", {
 		basemap: "topo",
@@ -26,7 +35,11 @@ require(["dojo/parser",
     
     var zips = new FeatureLayer("https://services1.arcgis.com/1L9nSO7QmA3AYgYY/arcgis/rest/services/zip_codes/FeatureServer/0",
                                 {outFields: ["GEOid2"]});
+    var ratings = new FeatureLayer("https://services7.arcgis.com/rY0j0cItaYX4ogFB/arcgis/rest/services/User_Rating/FeatureServer/0",
+                                  {outFields: ["*"]});
+    
     map.addLayer(zips);
+    map.addLayer(ratings);
     
     var legend = new Legend({
         map: map,
@@ -69,6 +82,29 @@ require(["dojo/parser",
     }
     
     window.drawFeatureLayer = drawFeatureLayer;
+    
+    function submitRating(address, rating){
+        var search = new Search();
+        search.startup();
+        var result = search.search(address);
+        var location;
+        result.then(function(result){
+            location = result;
+            search.destroy();
+            var point = result[0][0].feature.geometry;
+            var marker = new SMS().setStyle(SMS.STYLE_SQURE).setColor(new Color([255, 0, 0, 0.5]));
+            var attr = {"User_Rating": rating};
+            var infoTemplate = new InfoTemplate("User Rating", "Rating: ${User_Rating}");
+            var graphic = new Graphic(point, marker, attr, infoTemplate);
+            ratings.applyEdits([graphic], null, null, function(adds){
+                console.log(adds);
+            }, function(err){
+                console.log(err);
+            });
+        });
+    }
+    
+    window.submitRating = submitRating;
     
     function minValue(obj, index)
     {

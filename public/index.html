@@ -92,6 +92,23 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <div data-dojo-type="dijit/layout/ContentPane"
+                         data-dojo-props="title:'Submit Rating'">
+                        <div data-dojo-type="dijit/form/Form" id="ratingForm" data-dojo-id="ratingForm"
+                             encType="multipart/form-data" action="" method="">
+                            <input type="text" id="address" data-dojo-type="dijit/form/TextBox" />
+                            <input type="number" id="rating" data-dojo-type="dijit/form/NumberTextBox" />
+                            <button data-dojo-type="dijit/form/Button" type="button">
+                                Submit
+                                <script type="dojo/on" data-dojo-event="click">
+                                    var address = ratingForm.getChildren()[0].getValue();
+                                    var rating = ratingForm.getChildren()[1].getValue();
+                                    submitRating(address, rating);
+                                </script>
+                            </button> 
+                        </div>
+                    </div>
                 </div>
             </div>
             <div id="map"
