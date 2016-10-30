@@ -1,5 +1,6 @@
 require(["dojo/parser",
          "dojo/_base/array",
+         "dojo/on",
          "esri/map",
          "esri/dijit/Legend",
          "esri/layers/FeatureLayer",
@@ -8,11 +9,13 @@ require(["dojo/parser",
          "esri/renderers/ClassBreaksRenderer",
          "esri/Color",
 		 "esri/request",
+         "dijit/DropDownMenu",
+         "dijit/MenuItem",
          "dijit/layout/BorderContainer",
          "dijit/layout/ContentPane",
          "dijit/layout/AccordionContainer",
 		 "dojo/domReady!"], 
-        function(Parser, arr, Map, Legend, FeatureLayer, SLS, SFS, ClassBreaksRenderer, Color, EsriRequest){
+        function(Parser, arr, on, Map, Legend, FeatureLayer, SLS, SFS, ClassBreaksRenderer, Color, EsriRequest, DropDownMenu){
     Parser.parse();
 	var map = new Map("map", {
 		basemap: "topo",
@@ -30,6 +33,7 @@ require(["dojo/parser",
     }, "legendDiv");
     legend.startup();
     
+    var datastore;
     var prices = EsriRequest({
         url: "http://localhost:3000/csv",
         handleAs: "json"
@@ -38,13 +42,13 @@ require(["dojo/parser",
     
     function loadData(data)
     {
-        window.data = data;
+        datastore = data;
         drawFeatureLayer("one", 0);
     }
     
     function drawFeatureLayer(field, index)
     {
-        data = window.data[field];
+        data = datastore[field];
         var min = minValue(data, index);
         var max = maxValue(data, index);
         var breaks = calcBreaks(min, max, 4);
@@ -60,6 +64,8 @@ require(["dojo/parser",
         zips.setRenderer(br);
         zips.redraw();
     }
+    
+    window.drawFeatureLayer = drawFeatureLayer;
     
     function minValue(obj, index)
     {
