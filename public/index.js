@@ -27,7 +27,7 @@ require(["dojo/parser",
     var legend = new Legend({
         map: map,
         layerInfos: [{"layer": zips, "title": "Rent Rating"}]
-    }, "legend");
+    }, "legendDiv");
     legend.startup();
     
     var prices = EsriRequest({

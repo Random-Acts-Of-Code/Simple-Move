@@ -1,12 +1,13 @@
-html, body, #map {
-	height: 100%;
-	padding: 0;
-	margin: 0;
-}
+    html, body {
+      height: 97%;
+      width: 98%;
+      margin: 1%;
+    }
 
-#legend {
-    left: 0;
-    bottom: 0;
-    width: 150px;
-}
+    #rightPane {
+      width: 20%;
+    }
 
+    #legendPane {
+      border: solid #97DCF2 1px;
+    }
