@@ -1,16 +1,22 @@
-    html, body {
-      height: 97%;
-      width: 98%;
-      margin: 1%;
-    }
+html, body {
+  height: 97%;
+  width: 98%;
+  margin: 1%;
+    font-family: 'Quicksand', sans-serif;
+}
 
-    #rightPane {
-      width: 20%;
-    }
+#rightPane {
+    padding: 0;
+  width: 20%;
+    font-family: 'Quicksand', sans-serif;
+    border-radius: 2px;
+    margin-left: 5px;
+}
 
-    #legendPane {
-      border: solid #97DCF2 1px;
-    }
+#map {
+    padding: 0;
+    border-radius: 4px;
+}
 
 #rating {
     text-align: left;

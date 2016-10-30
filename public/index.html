@@ -3,6 +3,10 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+
+		<!--Google fonts-->
+		<link href="https://fonts.googleapis.com/css?family=Quicksand:300,400" rel="stylesheet">
+
         <link rel="stylesheet" href="https://js.arcgis.com/3.18/dijit/themes/claro/claro.css">
 		<link rel="stylesheet" href="https://js.arcgis.com/3.18/esri/css/esri.css">
 		<link rel="stylesheet" href="style.css">
@@ -107,8 +111,8 @@
                          data-dojo-props="title:'Submit Rating'">
                         <div data-dojo-type="dijit/form/Form" id="ratingForm" data-dojo-id="ratingForm"
                              encType="multipart/form-data" action="" method="">
-                            <input type="text" id="address" data-dojo-type="dijit/form/TextBox" />
-                            <input type="number" id="rating" data-dojo-type="dijit/form/NumberTextBox" />
+                            <input type="text" id="address" placeholder="zip" data-dojo-type="dijit/form/TextBox" />
+                            <input type="number" id="rating" placeholder="rating" data-dojo-type="dijit/form/NumberTextBox" />
                             <button data-dojo-type="dijit/form/Button" type="button">
                                 Submit
                                 <script type="dojo/on" data-dojo-event="click">
