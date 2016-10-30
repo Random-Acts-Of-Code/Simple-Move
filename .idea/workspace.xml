@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="ab1f818b-84f0-42e7-991e-97a32cfd07bc" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/index.html" afterPath="$PROJECT_DIR$/public/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/style.css" afterPath="$PROJECT_DIR$/public/style.css" />
     </list>
     <ignored path="Simple-Move.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -442,7 +440,7 @@
       <workItem from="1477774134427" duration="4798000" />
       <workItem from="1477786348789" duration="353000" />
       <workItem from="1477788662100" duration="1186000" />
-      <workItem from="1477827691272" duration="2083000" />
+      <workItem from="1477827691272" duration="2142000" />
     </task>
     <task id="LOCAL-00001" summary="added for each to server">
       <created>1477784101350</created>
@@ -493,11 +491,18 @@
       <option name="project" value="LOCAL" />
       <updated>1477827961124</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="edited minor styling">
+      <created>1477831492383</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1477831492383</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="8420000" />
+    <option name="totallyTimeSpent" value="8479000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="873" extended-state="6" />
@@ -542,7 +547,8 @@
     <MESSAGE value="added general-data to JSON response" />
     <MESSAGE value="added median rent to JSON response" />
     <MESSAGE value="node server returning unemployment" />
-    <option name="LAST_COMMIT_MESSAGE" value="node server returning unemployment" />
+    <MESSAGE value="edited minor styling" />
+    <option name="LAST_COMMIT_MESSAGE" value="edited minor styling" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
