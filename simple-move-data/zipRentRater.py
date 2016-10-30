@@ -208,6 +208,7 @@ def parseRentPriceCSV():
 
     return zipCodes
 
+# scales a range of values to a new range
 def scaleTo100(oldValue, oldMax, oldMin, newMax, newMin):
 
     oldRange = (oldMax - oldMin)
