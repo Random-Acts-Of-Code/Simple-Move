@@ -11,3 +11,7 @@
     #legendPane {
       border: solid #97DCF2 1px;
     }
+
+#rating {
+    text-align: left;
+}
