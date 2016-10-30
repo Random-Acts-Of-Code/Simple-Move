@@ -176,19 +176,18 @@ def parseRentPriceCSV():
 
                     data = value
 
-                    # make a slope of zero the max
+                    # make a slope of zero the max (more constant the rent is over time the better)
                     temp = -abs(data[1])
                     maxSlope = -abs(maxSlope)
                     if (maxSlope < minSlope):
                         minSlope = maxSlope
 
+                    # make ratio want to be lower (lower rent compared to average is better)
                     cityCompare = scaleTo100(data[0], maxRentRatio, minRentRatio, 100, 0)
                     cityCompare = 100 - cityCompare
 
+                    # make trend want to be more positive
                     priceTrend = scaleTo100(temp, 0, minSlope, 100, 0)
-                    if (priceTrend > 100):
-                        print "TREND ABOVE MAX"
-                        print "VALUE = " + str(priceTrend)
 
                     priceStability = scaleTo100(data[2], maxRSqr, minRSqr, 100, 0)
 
