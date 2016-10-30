@@ -31,18 +31,65 @@
                          data-dojo-props="title:'Select Data'">
                         <div id="dataSelectDiv" data-dojo-type="dijit/DropDownMenu">
                             <div data-dojo-type="dijit/MenuItem"> 
-                                Rating score for one bedroom apartments
+                                Rating for Studio Apartments
+                                <script type="dojo/on" data-dojo-event="click">
+                                    drawFeatureLayer("studio", 0);
+                                </script>
+                            </div>
+                            <div data-dojo-type="dijit/MenuItem"> 
+                                Rating for One Bedroom
                                 <script type="dojo/on" data-dojo-event="click">
                                     drawFeatureLayer("one", 0);
                                 </script>
                             </div>
                             <div data-dojo-type="dijit/MenuItem"> 
-                                Rating score for two bedroom apartments
+                                Rating for Two Bedroom
                                 <script type="dojo/on" data-dojo-event="click">
                                     drawFeatureLayer("two", 0);
                                 </script>
                             </div>
-
+                            <div data-dojo-type="dijit/MenuItem"> 
+                                Rating for Three Bedroom
+                                <script type="dojo/on" data-dojo-event="click">
+                                    drawFeatureLayer("three", 0);
+                                </script>
+                            </div>
+                            <div data-dojo-type="dijit/MenuItem"> 
+                                Rating for Four Bedroom
+                                <script type="dojo/on" data-dojo-event="click">
+                                    drawFeatureLayer("four", 0);
+                                </script>
+                            </div>
+                            <div data-dojo-type="dijit/MenuItem"> 
+                                Rating for Five Bedroom
+                                <script type="dojo/on" data-dojo-event="click">
+                                    drawFeatureLayer("five", 0);
+                                </script>
+                            </div>
+                            <div data-dojo-type="dijit/MenuItem"> 
+                                Population
+                                <script type="dojo/on" data-dojo-event="click">
+                                    drawFeatureLayer("general", 0);
+                                </script>
+                            </div>
+                            <div data-dojo-type="dijit/MenuItem"> 
+                                Square Miles
+                                <script type="dojo/on" data-dojo-event="click">
+                                    drawFeatureLayer("general", 1);
+                                </script>
+                            </div>
+                            <div data-dojo-type="dijit/MenuItem"> 
+                                Population Density
+                                <script type="dojo/on" data-dojo-event="click">
+                                    drawFeatureLayer("general", 2);
+                                </script>
+                            </div>
+                            <div data-dojo-type="dijit/MenuItem"> 
+                                Unemployment
+                                <script type="dojo/on" data-dojo-event="click">
+                                    drawFeatureLayer("general", 3);
+                                </script>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -6,6 +6,7 @@ require(["dojo/parser",
          "esri/layers/FeatureLayer",
          "esri/symbols/SimpleLineSymbol",
          "esri/symbols/SimpleFillSymbol",
+         "esri/renderers/SimpleRenderer",
          "esri/renderers/ClassBreaksRenderer",
          "esri/Color",
 		 "esri/request",
@@ -15,7 +16,7 @@ require(["dojo/parser",
          "dijit/layout/ContentPane",
          "dijit/layout/AccordionContainer",
 		 "dojo/domReady!"], 
-        function(Parser, arr, on, Map, Legend, FeatureLayer, SLS, SFS, ClassBreaksRenderer, Color, EsriRequest, DropDownMenu){
+        function(Parser, arr, on, Map, Legend, FeatureLayer, SLS, SFS, SimpleRenderer, ClassBreaksRenderer, Color, EsriRequest, DropDownMenu){
     Parser.parse();
 	var map = new Map("map", {
 		basemap: "topo",
@@ -48,6 +49,7 @@ require(["dojo/parser",
     
     function drawFeatureLayer(field, index)
     {
+        zips.redraw();
         data = datastore[field];
         var min = minValue(data, index);
         var max = maxValue(data, index);
@@ -63,6 +65,7 @@ require(["dojo/parser",
         
         zips.setRenderer(br);
         zips.redraw();
+        legend.refresh();
     }
     
     window.drawFeatureLayer = drawFeatureLayer;
