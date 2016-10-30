@@ -1,13 +1,19 @@
-require(["dojo/_base/array",
-         "esri/map", 
+require(["dojo/parser",
+         "dojo/_base/array",
+         "esri/map",
+         "esri/dijit/Legend",
          "esri/layers/FeatureLayer",
          "esri/symbols/SimpleLineSymbol",
          "esri/symbols/SimpleFillSymbol",
          "esri/renderers/ClassBreaksRenderer",
          "esri/Color",
 		 "esri/request",
+         "dijit/layout/BorderContainer",
+         "dijit/layout/ContentPane",
+         "dijit/layout/AccordionContainer",
 		 "dojo/domReady!"], 
-        function(arr, Map, FeatureLayer, SLS, SFS, ClassBreaksRenderer, Color, EsriRequest){
+        function(Parser, arr, Map, Legend, FeatureLayer, SLS, SFS, ClassBreaksRenderer, Color, EsriRequest){
+    Parser.parse();
 	var map = new Map("map", {
 		basemap: "topo",
 		center: [-73.950, 40.702],
@@ -16,8 +22,13 @@ require(["dojo/_base/array",
     
     var zips = new FeatureLayer("https://services1.arcgis.com/1L9nSO7QmA3AYgYY/arcgis/rest/services/zip_codes/FeatureServer/0",
                                 {outFields: ["GEOid2"]});
-    
     map.addLayer(zips);
+    
+    var legend = new Legend({
+        map: map,
+        layerInfos: [{"layer": zips, "title": "Rent Rating"}]
+    }, "legend");
+    legend.startup();
     
     var prices = EsriRequest({
         url: "http://localhost:3000/csv",
@@ -28,45 +39,45 @@ require(["dojo/_base/array",
     function loadData(data)
     {
         window.data = data;
-        drawFeatureLayer("one");
+        drawFeatureLayer("one", 0);
     }
     
-    function drawFeatureLayer(field)
+    function drawFeatureLayer(field, index)
     {
         data = window.data[field];
-        var min = minValue(data, "RENT_INDEX");
-        var max = maxValue(data, "RENT_INDEX");
+        var min = minValue(data, index);
+        var max = maxValue(data, index);
         var breaks = calcBreaks(min, max, 4);
         var outline = new SLS("solid", new Color("#444"), 1);
         var br = new ClassBreaksRenderer(null, function(g){
-            return data[g.attributes.GEOid2];
+            return data[g.attributes.GEOid2][index];
         });
-        br.addBreak(breaks[0], breaks[1], new SFS("solid", outline, new Color("#d8e8f3")));
-        br.addBreak(breaks[1], breaks[2], new SFS("solid", outline, new Color("#9fc5e0")));
-        br.addBreak(breaks[2], breaks[3], new SFS("solid", outline, new Color("#5296c7")));
-        br.addBreak(breaks[3], max, new SFS("solid", outline, new Color("#2c6187")));
+        br.addBreak(breaks[0].toFixed(2), breaks[1].toFixed(2), new SFS("solid", outline, new Color("#d8e8f3")));
+        br.addBreak(breaks[1].toFixed(2), breaks[2].toFixed(2), new SFS("solid", outline, new Color("#9fc5e0")));
+        br.addBreak(breaks[2].toFixed(2), breaks[3].toFixed(2), new SFS("solid", outline, new Color("#5296c7")));
+        br.addBreak(breaks[3].toFixed(2), max.toFixed(2), new SFS("solid", outline, new Color("#2c6187")));
         
         zips.setRenderer(br);
         zips.redraw();
     }
     
-    function minValue(obj)
+    function minValue(obj, index)
     {
         var min = Infinity;
         for(var key in obj){
-            if(obj[key] < min){
-                min = obj[key];
+            if(obj[key][index] < min){
+                min = obj[key][index];
             }
         }
         return min;
     }
     
-    function maxValue(obj)
+    function maxValue(obj, index)
     {
         var max = -Infinity;
         for(var key in obj){
-            if(obj[key] > max){
-                max = obj[key];
+            if(obj[key][index] > max){
+                max = obj[key][index];
             }
         }
         return max;

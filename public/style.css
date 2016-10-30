@@ -3,3 +3,10 @@ html, body, #map {
 	padding: 0;
 	margin: 0;
 }
+
+#legend {
+    left: 0;
+    bottom: 0;
+    width: 150px;
+}
+
