@@ -1,9 +1,13 @@
 require(["dojo/parser",
          "dojo/_base/array",
          "dojo/on",
+         "dojo/dom-construct",
+         "dojo/dom-style",
+         "esri/lang",
          "esri/map",
          "esri/graphic",
          "esri/InfoTemplate",
+         "esri/dijit/InfoWindow",
          "esri/dijit/Legend",
          "esri/dijit/Search",
          "esri/layers/FeatureLayer",
@@ -14,6 +18,8 @@ require(["dojo/parser",
          "esri/renderers/ClassBreaksRenderer",
          "esri/Color",
 		 "esri/request",
+         "dijit/TooltipDialog",
+         "dijit/popup",
          "dijit/form/Form",
          "dijit/form/TextBox",
          "dijit/form/NumberTextBox",
@@ -24,19 +30,50 @@ require(["dojo/parser",
          "dijit/layout/ContentPane",
          "dijit/layout/AccordionContainer",
 		 "dojo/domReady!"], 
-        function(Parser, arr, on, Map, Graphic, InfoTemplate, Legend, Search, FeatureLayer, 
-                  SMS, SLS, SFS, SimpleRenderer, ClassBreaksRenderer, Color, EsriRequest){
+        function(Parser, arr, on, domConstruct, domStyle, esriLang, Map, Graphic, InfoTemplate, InfoWindow, Legend, Search, FeatureLayer, 
+                  SMS, SLS, SFS, SimpleRenderer, ClassBreaksRenderer, Color, EsriRequest, TooltipDialog, dijitPopup){
     Parser.parse();
+    
 	var map = new Map("map", {
 		basemap: "topo",
 		center: [-73.950, 40.702],
 		zoom: 11
-	});
+    });
+    
+    dialog = new TooltipDialog({
+        id: "tooltipDialog",
+        style: "position: absolute; width: 250px;"
+    });
+    dialog.startup();
     
     var zips = new FeatureLayer("https://services1.arcgis.com/1L9nSO7QmA3AYgYY/arcgis/rest/services/zip_codes/FeatureServer/0",
                                 {outFields: ["GEOid2"]});
     var ratings = new FeatureLayer("https://services7.arcgis.com/rY0j0cItaYX4ogFB/arcgis/rest/services/User_Rating/FeatureServer/0",
                                   {outFields: ["*"]});
+    
+    zips.on("mouse-over", function(evt){
+        var data = datastore[currentDisplay];
+        var fieldName = fieldToName(currentDisplay);
+        var template;
+        if(fieldName === "General Information"){
+            template = "<b>Zip Code: ${GEOid2}</b><hr>" +
+                "<b>Population:</b> " + data[evt.graphic.attributes.GEOid2][0].toFixed(2) + "<br/>" +
+                "<b>Square Miles:</b> " + data[evt.graphic.attributes.GEOid2][1].toFixed(2) + "<br/>" +
+                "<b>Population Density:</b> " + data[evt.graphic.attributes.GEOid2][2].toFixed(2) + "<br/>" +
+                "<b>Unemployment:</b> " + data[evt.graphic.attributes.GEOid2][3].toFixed(2) + "<br/>";
+        } else {
+            template = "<b>Zip Code: ${GEOid2}</b><hr>" +
+            "<b>" + fieldName + ":</b> " + data[evt.graphic.attributes.GEOid2][0].toFixed(2);
+        }
+        var content = esriLang.substitute(evt.graphic.attributes, template);
+        dialog.setContent(content);
+        domStyle.set(dialog.domNode, "opacity", 0.85);
+        dijitPopup.open({popup: dialog, x: evt.pageX, y: evt.pageY});
+    });
+    
+    zips.on("mouse-out", function(evt){
+        dijitPopup.close(dialog);
+    });
     
     map.addLayer(zips);
     map.addLayer(ratings);
@@ -47,7 +84,7 @@ require(["dojo/parser",
     }, "legendDiv");
     legend.startup();
     
-    var datastore;
+    var datastore, currentDisplay;
     var prices = EsriRequest({
         url: "http://localhost:3000/csv",
         handleAs: "json"
@@ -62,6 +99,7 @@ require(["dojo/parser",
     
     function drawFeatureLayer(field, index)
     {
+        currentDisplay = field;
         zips.redraw();
         data = datastore[field];
         var min = minValue(data, index);
@@ -137,5 +175,36 @@ require(["dojo/parser",
                 breakValues[i] = min + (range * i);
             }
         return breakValues;
+    }
+    
+    function fieldToName(field)
+    {
+        var returnValue;
+        switch(field){
+            case "studio":
+                returnValue = "Studio Apartments";
+                break;
+            case "one":
+                returnValue = "One Bedroom";
+                break;
+            case "two":
+                returnValue = "Two Bedroom";
+                break;
+            case "three":
+                returnValue = "Three Bedroom";
+                break;
+            case "four":
+                returnValue = "Four Bedroom";
+                break;
+            case "five":
+                returnValue = "Five Bedroom";
+                break;
+            case "general":
+                returnValue = "General Information";
+                break;
+            default:
+                returnValue = "unexpected field";
+        }
+        return returnValue;
     }
 });
