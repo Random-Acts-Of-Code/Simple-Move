@@ -1,15 +1,18 @@
 require(["dojo/parser",
          "dojo/_base/array",
          "dojo/on",
+         "dojo/dom",
          "dojo/dom-construct",
          "dojo/dom-style",
          "esri/lang",
          "esri/map",
          "esri/graphic",
+         "esri/tasks/query",
          "esri/InfoTemplate",
          "esri/dijit/InfoWindow",
          "esri/dijit/Legend",
          "esri/dijit/Search",
+         "esri/geometry/Circle",
          "esri/layers/FeatureLayer",
          "esri/symbols/SimpleMarkerSymbol",
          "esri/symbols/SimpleLineSymbol",
@@ -30,8 +33,8 @@ require(["dojo/parser",
          "dijit/layout/ContentPane",
          "dijit/layout/AccordionContainer",
 		 "dojo/domReady!"], 
-        function(Parser, arr, on, domConstruct, domStyle, esriLang, Map, Graphic, InfoTemplate, InfoWindow, Legend, Search, FeatureLayer, 
-                  SMS, SLS, SFS, SimpleRenderer, ClassBreaksRenderer, Color, EsriRequest, TooltipDialog, dijitPopup){
+        function(Parser, arr, on, dom, domConstruct, domStyle, esriLang, Map, Graphic, Query, InfoTemplate, InfoWindow, Legend, Search, 
+                  Circle, FeatureLayer, SMS, SLS, SFS, SimpleRenderer, ClassBreaksRenderer, Color, EsriRequest, TooltipDialog, dijitPopup){
     Parser.parse();
     
 	var map = new Map("map", {
@@ -88,8 +91,55 @@ require(["dojo/parser",
         dijitPopup.close(dialog);
     });
     
+    var ratingSymbol = new SMS(SMS.STYLE_CIRCLE, 12, 
+                               new SLS(SLS.STYLE_NULL, new Color([247, 34, 101, 0.9]), 1), 
+                               new Color([207, 34, 171, 0.5]));
+    ratings.setSelectionSymbol(ratingSymbol);
+    
     map.addLayer(zips);
     map.addLayer(ratings);
+    
+    var circleSymb = new SFS(SFS.STYLE_NULL,
+                            new SLS(SLS.STYLE_SHORTDASHDOTDOT, 
+                                   new Color([105, 105, 105]), 2),
+                            new Color([255, 255, 0, 0.25]));
+    var circle;
+    
+    map.on("click", function(evt){
+        circle = new Circle({
+            center: evt.mapPoint,
+            geodesic: true,
+            radius: 3,
+            radiusUnit: "esriMiles"
+        });
+        map.graphics.clear();
+        map.infoWindow.hide();
+        var graphic = new Graphic(circle, circleSymb);
+        map.graphics.add(graphic);
+        
+        var query = new Query();
+        query.geometry = circle.getExtent();
+        ratings.queryFeatures(query, selectInBuffer);
+    });
+    
+    function selectInBuffer(response)
+    {
+        var feature;
+        var features = response.features;
+        var inBuffer = [];
+        
+        for(var i = 0; i < features.length; i++) {
+            feature = features[i];
+            if(circle.contains(feature.geometry)){
+                inBuffer.push(feature.attributes[ratings.objectIdField]);
+            }
+        }
+        var query = new Query();
+        query.objectIds = inBuffer;
+        ratings.selectFeatures(query, FeatureLayer.SELECTION_NEW, function(results){
+            //console.log(results);
+        });
+    }
     
     var legend = new Legend({
         map: map,
@@ -150,10 +200,9 @@ require(["dojo/parser",
             location = result;
             search.destroy();
             var point = result[0][0].feature.geometry;
-            var marker = new SMS().setStyle(SMS.STYLE_SQURE).setColor(new Color([255, 0, 0, 0.5]));
             var attr = {"User_Rating": rating};
             var infoTemplate = new InfoTemplate("User Rating", "Rating: ${User_Rating}");
-            var graphic = new Graphic(point, marker, attr, infoTemplate);
+            var graphic = new Graphic(point, null, attr, infoTemplate);
             ratings.applyEdits([graphic], null, null, function(adds){
                 console.log(adds);
             }, function(err){
