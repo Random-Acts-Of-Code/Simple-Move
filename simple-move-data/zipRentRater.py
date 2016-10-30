@@ -4,14 +4,12 @@ import csv, sys
 # Takes CSV file data on rental prices and gives the zip code a rank based on several critera
 
 def main():
-    rentDict = parseRentPriceCSV()
-    parseGeneralData(rentDict)
+    zipCodes = parseRentPriceCSV()
+    parseGeneralData(zipCodes)
 
-def parseGeneralData(rentDic):
-    # Create dict
-    genDic = {}
+def parseGeneralData(zipCodes):
 
-    fileNameIn = ["population-density-zip.csv", "unemployment-zip.csv"]
+    fileNameIn = ["population-density-zip.csv"]
     fileNameOut = "general-data.csv"
 
     for j in range(len(fileNameIn)):
@@ -20,11 +18,26 @@ def parseGeneralData(rentDic):
             reader = csv.reader(f)
             try:
                 # Parse csv file
-                for key in rentDic:
-                    for row in reader:
-                        if (row[0] == key):
-                            # TODO
-                            i = 1
+                for row in reader:
+                    if (row[0] in zipCodes):
+                        # add info
+                        zipCodes[row[0]].insert(0, (float(row[1])))
+                        zipCodes[row[0]].insert(1, (float(row[2])))
+                        zipCodes[row[0]].insert(2, (float(row[3])))
+
+                        # test if zip has no data
+                        if (len(zipCodes[row[0]]) > 3):
+                            zipCodes[row[0]].pop()
+                            zipCodes[row[0]].pop()
+                            zipCodes[row[0]].pop()
+
+                # write to new csv
+                outName = "out/" + fileNameOut
+                with open(outName, "wb") as csv_file:
+                    writer = csv.writer(csv_file)
+                    writer.writerow(["ZIP_CODE", "2010_POPULATION", "SQUARE_MILES", "POPULATION_DENSITY"])
+                    for key, value in zipCodes.items():
+                        writer.writerow([key, value[0], value[1], value[2]])
 
             except csv.Error as e:
                 sys.exit('file %s, line %d: %s' % (filename, reader.line_num, e))
@@ -56,6 +69,8 @@ def parseRentPriceCSV():
     fileNameOut = ["studio.csv", "one.csv", "two.csv", "three.csv", "four.csv", "five.csv"]
     maxCityPrice = [2199, 2390, 2694.5, 3000, 3700, 4496.5]
 
+    zipCodes = {}
+
     rent = {}
 
     # loop through all the apartment sizes
@@ -86,6 +101,8 @@ def parseRentPriceCSV():
                             if (row[i+6] != ""):
                                 xd.append(i + 1)
                                 yd.append(float(row[i+6]))
+                        if not(row[0] in zipCodes):
+                            zipCodes[row[0]] = [0, 0, 0]
 
                     # Analyze data
                     if (xd != [] and yd != []):
@@ -134,8 +151,6 @@ def parseRentPriceCSV():
                         xd = []
                         yd = []
 
-
-
                 # Determine rental index for each zip
                 for key, value in rent.items():
 
@@ -158,7 +173,7 @@ def parseRentPriceCSV():
             except csv.Error as e:
                 sys.exit('file %s, line %d: %s' % (filename, reader.line_num, e))
 
-    return rent
+    return zipCodes
 
 def scaleTo100(oldValue, oldMax, oldMin):
 
