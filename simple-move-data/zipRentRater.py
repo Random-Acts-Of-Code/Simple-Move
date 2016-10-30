@@ -175,11 +175,25 @@ def parseRentPriceCSV():
                 for key, value in rent.items():
 
                     data = value
-                    cityCompare = scaleTo100(data[0], maxRentRatio, minRentRatio)
-                    priceTrend = scaleTo100(data[1], maxSlope, minSlope)
-                    priceStability = scaleTo100(data[2], maxRSqr, minRSqr)
+
+                    # make a slope of zero the max
+                    temp = -abs(data[1])
+                    maxSlope = -abs(maxSlope)
+                    if (maxSlope < minSlope):
+                        minSlope = maxSlope
+
+                    cityCompare = scaleTo100(data[0], maxRentRatio, minRentRatio, 100, 0)
+                    cityCompare = 100 - cityCompare
+
+                    priceTrend = scaleTo100(temp, 0, minSlope, 100, 0)
+                    if (priceTrend > 100):
+                        print "TREND ABOVE MAX"
+                        print "VALUE = " + str(priceTrend)
+
+                    priceStability = scaleTo100(data[2], maxRSqr, minRSqr, 100, 0)
 
                     values = [cityCompare, priceTrend, priceStability]
+
                     rent[key] = [getRentalIndex(values), data[3]]
 
                 # write to new csv
@@ -195,10 +209,10 @@ def parseRentPriceCSV():
 
     return zipCodes
 
-def scaleTo100(oldValue, oldMax, oldMin):
+def scaleTo100(oldValue, oldMax, oldMin, newMax, newMin):
 
     oldRange = (oldMax - oldMin)
-    newValue = (((oldValue - oldMin) * 100) / oldRange)
+    newValue = (((oldValue - oldMin) * newMax) / oldRange) + newMin
 
     return newValue
 
