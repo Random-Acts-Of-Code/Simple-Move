@@ -8,6 +8,7 @@ var three_converter = new Converter({});
 var four_converter = new Converter({});
 var five_converter = new Converter({});
 var studio_converter = new Converter({});
+var general_converter = new Converter({});
 
 
 var response = {};
@@ -51,6 +52,13 @@ studio_converter.fromFile("simple-move-data/out/studio.csv",function(err,result)
     response.studio = {};
     result.forEach(function (obj) {
         response.studio[obj.ZIP_CODE] = [obj.RENT_INDEX];
+    });
+});
+
+general_converter.fromFile("simple-move-data/out/general-data.csv",function(err,result){
+    response.general = {};
+    result.forEach(function (obj) {
+        response.general[obj.ZIP_CODE] = [obj.POPULATION, obj.SQUARE_MILES, obj.POPULATION_DENSITY];
     });
 });
 
